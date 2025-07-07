@@ -1,7 +1,7 @@
 // Import PDF.js for real PDF text extraction
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Set up PDF.js worker
+// Set up PDF.js worker with matching version
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 // Resume categories for prediction simulation
@@ -177,6 +177,7 @@ class ResumeAnalyzer {
             }, 2000);
             
         } catch (error) {
+            console.error('File processing error:', error);
             alert(`Error processing file: ${error.message}`);
         }
     }
@@ -192,26 +193,66 @@ class ResumeAnalyzer {
 
     async extractTextFromPdf(file) {
         try {
+            console.log('Starting PDF extraction...');
             const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            
+            // Load the PDF document
+            const loadingTask = pdfjsLib.getDocument({ 
+                data: arrayBuffer,
+                verbosity: 0 // Reduce console output
+            });
+            
+            const pdf = await loadingTask.promise;
+            console.log(`PDF loaded with ${pdf.numPages} pages`);
+            
             let fullText = '';
             
             // Extract text from all pages
             for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                const page = await pdf.getPage(pageNum);
-                const textContent = await page.getTextContent();
-                const pageText = textContent.items.map(item => item.str).join(' ');
-                fullText += pageText + '\n';
+                try {
+                    const page = await pdf.getPage(pageNum);
+                    const textContent = await page.getTextContent();
+                    
+                    // Extract text items and join them
+                    const pageText = textContent.items
+                        .filter(item => item.str && item.str.trim()) // Filter out empty strings
+                        .map(item => item.str)
+                        .join(' ');
+                    
+                    if (pageText.trim()) {
+                        fullText += pageText + '\n';
+                    }
+                    
+                    console.log(`Extracted text from page ${pageNum}: ${pageText.length} characters`);
+                } catch (pageError) {
+                    console.warn(`Error extracting text from page ${pageNum}:`, pageError);
+                    // Continue with other pages
+                }
             }
             
-            if (!fullText.trim()) {
-                throw new Error('No text could be extracted from this PDF. The PDF might be image-based or corrupted.');
+            // Clean up the extracted text
+            fullText = fullText.trim();
+            
+            if (!fullText || fullText.length < 10) {
+                throw new Error('No readable text could be extracted from this PDF. The PDF might be image-based, password-protected, or corrupted.');
             }
             
+            console.log(`Total extracted text: ${fullText.length} characters`);
             return fullText;
+            
         } catch (error) {
             console.error('PDF extraction error:', error);
-            throw new Error(`Failed to extract text from PDF: ${error.message}`);
+            
+            // Provide more specific error messages
+            if (error.name === 'PasswordException') {
+                throw new Error('This PDF is password-protected. Please provide an unlocked PDF file.');
+            } else if (error.name === 'InvalidPDFException') {
+                throw new Error('This file appears to be corrupted or is not a valid PDF.');
+            } else if (error.message.includes('worker')) {
+                throw new Error('PDF processing library failed to load. Please refresh the page and try again.');
+            } else {
+                throw new Error(`Failed to extract text from PDF: ${error.message}`);
+            }
         }
     }
 
@@ -321,6 +362,9 @@ class ResumeAnalyzer {
             predictedCategory = this.fallbackPrediction(text);
         }
         
+        console.log('Category scores:', scores);
+        console.log('Predicted category:', predictedCategory, 'with score:', maxScore);
+        
         return predictedCategory;
     }
 
@@ -351,6 +395,7 @@ class ResumeAnalyzer {
             }
         });
         
+        console.log('Fallback prediction:', category, 'with score:', maxScore);
         return category;
     }
 
