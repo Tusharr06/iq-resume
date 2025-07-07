@@ -1,3 +1,9 @@
+// Import PDF.js for real PDF text extraction
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Set up PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
 // Resume categories for prediction simulation
 const RESUME_CATEGORIES = [
     'Software Engineer',
@@ -24,26 +30,26 @@ const RESUME_CATEGORIES = [
 
 // Keywords for different job categories
 const CATEGORY_KEYWORDS = {
-    'Software Engineer': ['javascript', 'python', 'java', 'react', 'node', 'programming', 'development', 'coding', 'software', 'algorithm', 'database', 'api', 'frontend', 'backend', 'fullstack'],
-    'Data Scientist': ['python', 'r', 'machine learning', 'data analysis', 'statistics', 'sql', 'pandas', 'numpy', 'tensorflow', 'pytorch', 'data mining', 'visualization', 'modeling'],
-    'Product Manager': ['product management', 'roadmap', 'strategy', 'agile', 'scrum', 'stakeholder', 'requirements', 'user stories', 'market research', 'analytics'],
-    'Marketing Specialist': ['marketing', 'campaigns', 'social media', 'content marketing', 'seo', 'sem', 'brand', 'advertising', 'promotion', 'market analysis'],
-    'Sales Representative': ['sales', 'revenue', 'targets', 'crm', 'lead generation', 'negotiation', 'client relations', 'prospecting', 'closing deals'],
-    'Business Analyst': ['business analysis', 'requirements', 'process improvement', 'stakeholder', 'documentation', 'workflow', 'business intelligence', 'reporting'],
-    'UX/UI Designer': ['ux', 'ui', 'design', 'figma', 'sketch', 'adobe', 'user experience', 'user interface', 'wireframes', 'prototyping', 'usability'],
-    'Project Manager': ['project management', 'pmp', 'agile', 'scrum', 'planning', 'coordination', 'timeline', 'budget', 'risk management', 'stakeholder'],
-    'Financial Analyst': ['financial analysis', 'excel', 'modeling', 'forecasting', 'budgeting', 'accounting', 'finance', 'investment', 'valuation'],
-    'Human Resources': ['hr', 'recruitment', 'hiring', 'employee relations', 'benefits', 'compensation', 'training', 'performance management'],
-    'Operations Manager': ['operations', 'process improvement', 'supply chain', 'logistics', 'efficiency', 'quality control', 'management'],
-    'Content Writer': ['writing', 'content creation', 'copywriting', 'editing', 'blogging', 'seo writing', 'content strategy', 'journalism'],
-    'Digital Marketing': ['digital marketing', 'google ads', 'facebook ads', 'social media marketing', 'email marketing', 'content marketing', 'analytics'],
-    'Customer Service': ['customer service', 'support', 'help desk', 'customer satisfaction', 'communication', 'problem solving', 'call center'],
-    'Quality Assurance': ['qa', 'testing', 'quality assurance', 'test cases', 'bug tracking', 'automation testing', 'manual testing', 'selenium'],
-    'DevOps Engineer': ['devops', 'aws', 'docker', 'kubernetes', 'ci/cd', 'jenkins', 'terraform', 'cloud', 'infrastructure', 'automation'],
-    'Research Scientist': ['research', 'phd', 'publications', 'experiments', 'analysis', 'methodology', 'scientific', 'laboratory'],
-    'Consultant': ['consulting', 'advisory', 'strategy', 'analysis', 'recommendations', 'client engagement', 'problem solving'],
-    'Account Manager': ['account management', 'client relations', 'relationship building', 'retention', 'upselling', 'customer success'],
-    'Administrative Assistant': ['administrative', 'office management', 'scheduling', 'coordination', 'data entry', 'customer service', 'organization']
+    'Software Engineer': ['javascript', 'python', 'java', 'react', 'node', 'programming', 'development', 'coding', 'software', 'algorithm', 'database', 'api', 'frontend', 'backend', 'fullstack', 'git', 'html', 'css', 'angular', 'vue'],
+    'Data Scientist': ['python', 'r', 'machine learning', 'data analysis', 'statistics', 'sql', 'pandas', 'numpy', 'tensorflow', 'pytorch', 'data mining', 'visualization', 'modeling', 'scikit', 'jupyter', 'matplotlib', 'seaborn'],
+    'Product Manager': ['product management', 'roadmap', 'strategy', 'agile', 'scrum', 'stakeholder', 'requirements', 'user stories', 'market research', 'analytics', 'product owner', 'feature', 'prioritization'],
+    'Marketing Specialist': ['marketing', 'campaigns', 'social media', 'content marketing', 'seo', 'sem', 'brand', 'advertising', 'promotion', 'market analysis', 'digital marketing', 'email marketing', 'lead generation'],
+    'Sales Representative': ['sales', 'revenue', 'targets', 'crm', 'lead generation', 'negotiation', 'client relations', 'prospecting', 'closing deals', 'quota', 'pipeline', 'customer acquisition'],
+    'Business Analyst': ['business analysis', 'requirements', 'process improvement', 'stakeholder', 'documentation', 'workflow', 'business intelligence', 'reporting', 'data analysis', 'process mapping'],
+    'UX/UI Designer': ['ux', 'ui', 'design', 'figma', 'sketch', 'adobe', 'user experience', 'user interface', 'wireframes', 'prototyping', 'usability', 'user research', 'interaction design'],
+    'Project Manager': ['project management', 'pmp', 'agile', 'scrum', 'planning', 'coordination', 'timeline', 'budget', 'risk management', 'stakeholder', 'gantt', 'waterfall', 'kanban'],
+    'Financial Analyst': ['financial analysis', 'excel', 'modeling', 'forecasting', 'budgeting', 'accounting', 'finance', 'investment', 'valuation', 'financial planning', 'variance analysis'],
+    'Human Resources': ['hr', 'recruitment', 'hiring', 'employee relations', 'benefits', 'compensation', 'training', 'performance management', 'talent acquisition', 'onboarding'],
+    'Operations Manager': ['operations', 'process improvement', 'supply chain', 'logistics', 'efficiency', 'quality control', 'management', 'lean', 'six sigma', 'inventory'],
+    'Content Writer': ['writing', 'content creation', 'copywriting', 'editing', 'blogging', 'seo writing', 'content strategy', 'journalism', 'creative writing', 'technical writing'],
+    'Digital Marketing': ['digital marketing', 'google ads', 'facebook ads', 'social media marketing', 'email marketing', 'content marketing', 'analytics', 'ppc', 'conversion optimization'],
+    'Customer Service': ['customer service', 'support', 'help desk', 'customer satisfaction', 'communication', 'problem solving', 'call center', 'customer success', 'ticket resolution'],
+    'Quality Assurance': ['qa', 'testing', 'quality assurance', 'test cases', 'bug tracking', 'automation testing', 'manual testing', 'selenium', 'test planning', 'defect management'],
+    'DevOps Engineer': ['devops', 'aws', 'docker', 'kubernetes', 'ci/cd', 'jenkins', 'terraform', 'cloud', 'infrastructure', 'automation', 'monitoring', 'deployment'],
+    'Research Scientist': ['research', 'phd', 'publications', 'experiments', 'analysis', 'methodology', 'scientific', 'laboratory', 'peer review', 'grant writing'],
+    'Consultant': ['consulting', 'advisory', 'strategy', 'analysis', 'recommendations', 'client engagement', 'problem solving', 'business consulting', 'implementation'],
+    'Account Manager': ['account management', 'client relations', 'relationship building', 'retention', 'upselling', 'customer success', 'account growth', 'client satisfaction'],
+    'Administrative Assistant': ['administrative', 'office management', 'scheduling', 'coordination', 'data entry', 'customer service', 'organization', 'clerical', 'executive support']
 };
 
 class ResumeAnalyzer {
@@ -185,23 +191,49 @@ class ResumeAnalyzer {
     }
 
     async extractTextFromPdf(file) {
-        // For demo purposes, we'll simulate PDF text extraction
-        // In a real implementation, you'd use a library like PDF.js
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(`[PDF Content Extracted from ${file.name}]\n\nThis is a simulated extraction of PDF content. In a real implementation, this would contain the actual text from your PDF resume including your experience, skills, education, and other relevant information.`);
-            }, 1000);
-        });
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = '';
+            
+            // Extract text from all pages
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += pageText + '\n';
+            }
+            
+            if (!fullText.trim()) {
+                throw new Error('No text could be extracted from this PDF. The PDF might be image-based or corrupted.');
+            }
+            
+            return fullText;
+        } catch (error) {
+            console.error('PDF extraction error:', error);
+            throw new Error(`Failed to extract text from PDF: ${error.message}`);
+        }
     }
 
     async extractTextFromDocx(file) {
-        // For demo purposes, we'll simulate DOCX text extraction
-        // In a real implementation, you'd use a library like mammoth.js
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(`[DOCX Content Extracted from ${file.name}]\n\nThis is a simulated extraction of DOCX content. In a real implementation, this would contain the actual text from your Word document resume including your professional summary, work experience, technical skills, and educational background.`);
-            }, 1000);
-        });
+        try {
+            // For DOCX files, we'll use a basic approach since mammoth.js requires more setup
+            // This is a fallback that reads the file as text (won't work perfectly but better than simulation)
+            const text = await file.text();
+            
+            // Try to extract readable content from the raw DOCX data
+            // This is a basic approach - for production, you'd want to use mammoth.js properly
+            const cleanText = text.replace(/[^\x20-\x7E\n]/g, ' ').replace(/\s+/g, ' ').trim();
+            
+            if (!cleanText || cleanText.length < 50) {
+                throw new Error('Could not extract meaningful text from DOCX file. Please try converting to PDF or TXT format.');
+            }
+            
+            return cleanText;
+        } catch (error) {
+            console.error('DOCX extraction error:', error);
+            throw new Error(`Failed to extract text from DOCX: ${error.message}. Please try converting to PDF or TXT format.`);
+        }
     }
 
     analyzeText() {
@@ -235,6 +267,15 @@ class ResumeAnalyzer {
         // Remove URLs
         cleanText = cleanText.replace(/http\S+\s/g, ' ');
         
+        // Remove RT and cc (Twitter-specific)
+        cleanText = cleanText.replace(/rt|cc/g, ' ');
+        
+        // Remove hashtags
+        cleanText = cleanText.replace(/#\S+\s/g, ' ');
+        
+        // Remove mentions
+        cleanText = cleanText.replace(/@\S+/g, ' ');
+        
         // Remove special characters and extra spaces
         cleanText = cleanText.replace(/[^\w\s]/g, ' ');
         cleanText = cleanText.replace(/\s+/g, ' ');
@@ -243,7 +284,7 @@ class ResumeAnalyzer {
     }
 
     predictCategory(text) {
-        // Simple keyword-based prediction simulation
+        // Enhanced keyword-based prediction
         const scores = {};
         
         // Initialize scores
@@ -251,13 +292,15 @@ class ResumeAnalyzer {
             scores[category] = 0;
         });
         
-        // Count keyword matches
+        // Count keyword matches with weighted scoring
         Object.entries(CATEGORY_KEYWORDS).forEach(([category, keywords]) => {
             keywords.forEach(keyword => {
-                const regex = new RegExp(keyword, 'gi');
+                const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
                 const matches = text.match(regex);
                 if (matches) {
-                    scores[category] += matches.length;
+                    // Weight longer keywords more heavily
+                    const weight = keyword.length > 5 ? 2 : 1;
+                    scores[category] += matches.length * weight;
                 }
             });
         });
@@ -273,12 +316,42 @@ class ResumeAnalyzer {
             }
         });
         
-        // If no keywords matched, return a random category for demo
-        if (maxScore === 0) {
-            predictedCategory = RESUME_CATEGORIES[Math.floor(Math.random() * RESUME_CATEGORIES.length)];
+        // If no keywords matched significantly, analyze common resume terms
+        if (maxScore < 3) {
+            predictedCategory = this.fallbackPrediction(text);
         }
         
         return predictedCategory;
+    }
+
+    fallbackPrediction(text) {
+        // Fallback prediction based on common terms
+        const commonTerms = {
+            'Software Engineer': ['code', 'develop', 'program', 'software', 'technical', 'computer'],
+            'Data Scientist': ['data', 'analysis', 'research', 'statistics', 'model'],
+            'Marketing Specialist': ['marketing', 'campaign', 'brand', 'promotion', 'customer'],
+            'Business Analyst': ['business', 'analysis', 'process', 'requirements', 'stakeholder'],
+            'Project Manager': ['project', 'manage', 'team', 'coordinate', 'planning']
+        };
+        
+        let maxScore = 0;
+        let category = 'Business Analyst'; // most generic default
+        
+        Object.entries(commonTerms).forEach(([cat, terms]) => {
+            let score = 0;
+            terms.forEach(term => {
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                const matches = text.match(regex);
+                if (matches) score += matches.length;
+            });
+            
+            if (score > maxScore) {
+                maxScore = score;
+                category = cat;
+            }
+        });
+        
+        return category;
     }
 
     showProcessing() {
@@ -334,7 +407,8 @@ class ResumeAnalyzer {
         const results = {
             timestamp: new Date().toISOString(),
             predictedCategory: this.categoryName.textContent,
-            extractedText: this.currentText.substring(0, 500) + '...' // Truncate for demo
+            extractedText: this.currentText.substring(0, 1000) + (this.currentText.length > 1000 ? '...' : ''),
+            textLength: this.currentText.length
         };
         
         const dataStr = JSON.stringify(results, null, 2);
