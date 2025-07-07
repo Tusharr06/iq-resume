@@ -1,62 +1,36 @@
-// Import PDF.js for real PDF text extraction
-import * as pdfjsLib from 'pdfjs-dist';
+// Resume categories matching your trained model (will be fetched from API)
+let RESUME_CATEGORIES = [];
 
-// Set up PDF.js worker with matching version
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-// Resume categories for prediction simulation
-const RESUME_CATEGORIES = [
-    'Software Engineer',
-    'Data Scientist',
-    'Product Manager',
-    'Marketing Specialist',
-    'Sales Representative',
-    'Business Analyst',
-    'UX/UI Designer',
-    'Project Manager',
-    'Financial Analyst',
-    'Human Resources',
-    'Operations Manager',
-    'Content Writer',
-    'Digital Marketing',
-    'Customer Service',
-    'Quality Assurance',
-    'DevOps Engineer',
-    'Research Scientist',
-    'Consultant',
-    'Account Manager',
-    'Administrative Assistant'
-];
-
-// Keywords for different job categories
-const CATEGORY_KEYWORDS = {
-    'Software Engineer': ['javascript', 'python', 'java', 'react', 'node', 'programming', 'development', 'coding', 'software', 'algorithm', 'database', 'api', 'frontend', 'backend', 'fullstack', 'git', 'html', 'css', 'angular', 'vue'],
-    'Data Scientist': ['python', 'r', 'machine learning', 'data analysis', 'statistics', 'sql', 'pandas', 'numpy', 'tensorflow', 'pytorch', 'data mining', 'visualization', 'modeling', 'scikit', 'jupyter', 'matplotlib', 'seaborn'],
-    'Product Manager': ['product management', 'roadmap', 'strategy', 'agile', 'scrum', 'stakeholder', 'requirements', 'user stories', 'market research', 'analytics', 'product owner', 'feature', 'prioritization'],
-    'Marketing Specialist': ['marketing', 'campaigns', 'social media', 'content marketing', 'seo', 'sem', 'brand', 'advertising', 'promotion', 'market analysis', 'digital marketing', 'email marketing', 'lead generation'],
-    'Sales Representative': ['sales', 'revenue', 'targets', 'crm', 'lead generation', 'negotiation', 'client relations', 'prospecting', 'closing deals', 'quota', 'pipeline', 'customer acquisition'],
-    'Business Analyst': ['business analysis', 'requirements', 'process improvement', 'stakeholder', 'documentation', 'workflow', 'business intelligence', 'reporting', 'data analysis', 'process mapping'],
-    'UX/UI Designer': ['ux', 'ui', 'design', 'figma', 'sketch', 'adobe', 'user experience', 'user interface', 'wireframes', 'prototyping', 'usability', 'user research', 'interaction design'],
-    'Project Manager': ['project management', 'pmp', 'agile', 'scrum', 'planning', 'coordination', 'timeline', 'budget', 'risk management', 'stakeholder', 'gantt', 'waterfall', 'kanban'],
-    'Financial Analyst': ['financial analysis', 'excel', 'modeling', 'forecasting', 'budgeting', 'accounting', 'finance', 'investment', 'valuation', 'financial planning', 'variance analysis'],
-    'Human Resources': ['hr', 'recruitment', 'hiring', 'employee relations', 'benefits', 'compensation', 'training', 'performance management', 'talent acquisition', 'onboarding'],
-    'Operations Manager': ['operations', 'process improvement', 'supply chain', 'logistics', 'efficiency', 'quality control', 'management', 'lean', 'six sigma', 'inventory'],
-    'Content Writer': ['writing', 'content creation', 'copywriting', 'editing', 'blogging', 'seo writing', 'content strategy', 'journalism', 'creative writing', 'technical writing'],
-    'Digital Marketing': ['digital marketing', 'google ads', 'facebook ads', 'social media marketing', 'email marketing', 'content marketing', 'analytics', 'ppc', 'conversion optimization'],
-    'Customer Service': ['customer service', 'support', 'help desk', 'customer satisfaction', 'communication', 'problem solving', 'call center', 'customer success', 'ticket resolution'],
-    'Quality Assurance': ['qa', 'testing', 'quality assurance', 'test cases', 'bug tracking', 'automation testing', 'manual testing', 'selenium', 'test planning', 'defect management'],
-    'DevOps Engineer': ['devops', 'aws', 'docker', 'kubernetes', 'ci/cd', 'jenkins', 'terraform', 'cloud', 'infrastructure', 'automation', 'monitoring', 'deployment'],
-    'Research Scientist': ['research', 'phd', 'publications', 'experiments', 'analysis', 'methodology', 'scientific', 'laboratory', 'peer review', 'grant writing'],
-    'Consultant': ['consulting', 'advisory', 'strategy', 'analysis', 'recommendations', 'client engagement', 'problem solving', 'business consulting', 'implementation'],
-    'Account Manager': ['account management', 'client relations', 'relationship building', 'retention', 'upselling', 'customer success', 'account growth', 'client satisfaction'],
-    'Administrative Assistant': ['administrative', 'office management', 'scheduling', 'coordination', 'data entry', 'customer service', 'organization', 'clerical', 'executive support']
-};
+// API configuration
+const API_BASE_URL = 'http://localhost:5000/api';
 
 class ResumeAnalyzer {
     constructor() {
         this.initializeElements();
         this.setupEventListeners();
         this.currentText = '';
+        this.loadCategories();
+    }
+
+    async loadCategories() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/categories`);
+            const data = await response.json();
+            if (data.success) {
+                RESUME_CATEGORIES = data.categories;
+                console.log('Loaded categories:', RESUME_CATEGORIES);
+            }
+        } catch (error) {
+            console.warn('Could not load categories from API, using fallback');
+            // Fallback categories based on your model
+            RESUME_CATEGORIES = [
+                'Advocate', 'Arts', 'Automation Testing', 'Blockchain', 'Business Analyst',
+                'Civil Engineer', 'Data Science', 'Database', 'DevOps Engineer', 'DotNet Developer',
+                'ETL Developer', 'Electrical Engineering', 'HR', 'Hadoop', 'Health and fitness',
+                'Java Developer', 'Mechanical Engineer', 'Network Security Engineer', 'Operations Manager',
+                'PMO', 'Python Developer', 'SAP Developer', 'Sales', 'Testing', 'Web Designing'
+            ];
+        }
     }
 
     initializeElements() {
@@ -155,129 +129,44 @@ class ResumeAnalyzer {
     async processFile(file) {
         const fileExtension = file.name.split('.').pop().toLowerCase();
         
+        if (!['pdf', 'docx', 'txt'].includes(fileExtension)) {
+            alert('Unsupported file type. Please upload a PDF, DOCX, or TXT file.');
+            return;
+        }
+        
+        this.showProcessing();
+        
         try {
-            let text = '';
+            const formData = new FormData();
+            formData.append('file', file);
             
-            if (fileExtension === 'txt') {
-                text = await this.extractTextFromTxt(file);
-            } else if (fileExtension === 'pdf') {
-                text = await this.extractTextFromPdf(file);
-            } else if (fileExtension === 'docx') {
-                text = await this.extractTextFromDocx(file);
+            const response = await fetch(`${API_BASE_URL}/analyze-file`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.currentText = result.extracted_text;
+                this.showResults(result.extracted_text, result.predicted_category, result.confidence);
             } else {
-                throw new Error('Unsupported file type. Please upload a PDF, DOCX, or TXT file.');
+                throw new Error(result.error || 'Failed to analyze file');
             }
-            
-            this.currentText = text;
-            this.showProcessing();
-            
-            // Simulate processing time
-            setTimeout(() => {
-                this.analyzeResumeContent(text);
-            }, 2000);
             
         } catch (error) {
             console.error('File processing error:', error);
-            alert(`Error processing file: ${error.message}`);
-        }
-    }
-
-    async extractTextFromTxt(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
-            reader.onerror = () => reject(new Error('Failed to read text file'));
-            reader.readAsText(file);
-        });
-    }
-
-    async extractTextFromPdf(file) {
-        try {
-            console.log('Starting PDF extraction...');
-            const arrayBuffer = await file.arrayBuffer();
+            this.hideProcessing();
             
-            // Load the PDF document
-            const loadingTask = pdfjsLib.getDocument({ 
-                data: arrayBuffer,
-                verbosity: 0 // Reduce console output
-            });
-            
-            const pdf = await loadingTask.promise;
-            console.log(`PDF loaded with ${pdf.numPages} pages`);
-            
-            let fullText = '';
-            
-            // Extract text from all pages
-            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                try {
-                    const page = await pdf.getPage(pageNum);
-                    const textContent = await page.getTextContent();
-                    
-                    // Extract text items and join them
-                    const pageText = textContent.items
-                        .filter(item => item.str && item.str.trim()) // Filter out empty strings
-                        .map(item => item.str)
-                        .join(' ');
-                    
-                    if (pageText.trim()) {
-                        fullText += pageText + '\n';
-                    }
-                    
-                    console.log(`Extracted text from page ${pageNum}: ${pageText.length} characters`);
-                } catch (pageError) {
-                    console.warn(`Error extracting text from page ${pageNum}:`, pageError);
-                    // Continue with other pages
-                }
-            }
-            
-            // Clean up the extracted text
-            fullText = fullText.trim();
-            
-            if (!fullText || fullText.length < 10) {
-                throw new Error('No readable text could be extracted from this PDF. The PDF might be image-based, password-protected, or corrupted.');
-            }
-            
-            console.log(`Total extracted text: ${fullText.length} characters`);
-            return fullText;
-            
-        } catch (error) {
-            console.error('PDF extraction error:', error);
-            
-            // Provide more specific error messages
-            if (error.name === 'PasswordException') {
-                throw new Error('This PDF is password-protected. Please provide an unlocked PDF file.');
-            } else if (error.name === 'InvalidPDFException') {
-                throw new Error('This file appears to be corrupted or is not a valid PDF.');
-            } else if (error.message.includes('worker')) {
-                throw new Error('PDF processing library failed to load. Please refresh the page and try again.');
+            if (error.message.includes('fetch')) {
+                alert('Could not connect to the analysis server. Please make sure the Python API server is running on localhost:5000');
             } else {
-                throw new Error(`Failed to extract text from PDF: ${error.message}`);
+                alert(`Error processing file: ${error.message}`);
             }
         }
     }
 
-    async extractTextFromDocx(file) {
-        try {
-            // For DOCX files, we'll use a basic approach since mammoth.js requires more setup
-            // This is a fallback that reads the file as text (won't work perfectly but better than simulation)
-            const text = await file.text();
-            
-            // Try to extract readable content from the raw DOCX data
-            // This is a basic approach - for production, you'd want to use mammoth.js properly
-            const cleanText = text.replace(/[^\x20-\x7E\n]/g, ' ').replace(/\s+/g, ' ').trim();
-            
-            if (!cleanText || cleanText.length < 50) {
-                throw new Error('Could not extract meaningful text from DOCX file. Please try converting to PDF or TXT format.');
-            }
-            
-            return cleanText;
-        } catch (error) {
-            console.error('DOCX extraction error:', error);
-            throw new Error(`Failed to extract text from DOCX: ${error.message}. Please try converting to PDF or TXT format.`);
-        }
-    }
-
-    analyzeText() {
+    async analyzeText() {
         const text = this.resumeText.value.trim();
         
         if (!text) {
@@ -285,118 +174,36 @@ class ResumeAnalyzer {
             return;
         }
         
-        this.currentText = text;
         this.showProcessing();
         
-        // Simulate processing time
-        setTimeout(() => {
-            this.analyzeResumeContent(text);
-        }, 2000);
-    }
-
-    analyzeResumeContent(text) {
-        const cleanedText = this.cleanResumeText(text);
-        const predictedCategory = this.predictCategory(cleanedText);
-        
-        this.showResults(cleanedText, predictedCategory);
-    }
-
-    cleanResumeText(text) {
-        // Simulate the cleaning process from the original Python code
-        let cleanText = text.toLowerCase();
-        
-        // Remove URLs
-        cleanText = cleanText.replace(/http\S+\s/g, ' ');
-        
-        // Remove RT and cc (Twitter-specific)
-        cleanText = cleanText.replace(/rt|cc/g, ' ');
-        
-        // Remove hashtags
-        cleanText = cleanText.replace(/#\S+\s/g, ' ');
-        
-        // Remove mentions
-        cleanText = cleanText.replace(/@\S+/g, ' ');
-        
-        // Remove special characters and extra spaces
-        cleanText = cleanText.replace(/[^\w\s]/g, ' ');
-        cleanText = cleanText.replace(/\s+/g, ' ');
-        
-        return cleanText.trim();
-    }
-
-    predictCategory(text) {
-        // Enhanced keyword-based prediction
-        const scores = {};
-        
-        // Initialize scores
-        Object.keys(CATEGORY_KEYWORDS).forEach(category => {
-            scores[category] = 0;
-        });
-        
-        // Count keyword matches with weighted scoring
-        Object.entries(CATEGORY_KEYWORDS).forEach(([category, keywords]) => {
-            keywords.forEach(keyword => {
-                const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
-                const matches = text.match(regex);
-                if (matches) {
-                    // Weight longer keywords more heavily
-                    const weight = keyword.length > 5 ? 2 : 1;
-                    scores[category] += matches.length * weight;
-                }
-            });
-        });
-        
-        // Find category with highest score
-        let maxScore = 0;
-        let predictedCategory = 'Software Engineer'; // default
-        
-        Object.entries(scores).forEach(([category, score]) => {
-            if (score > maxScore) {
-                maxScore = score;
-                predictedCategory = category;
-            }
-        });
-        
-        // If no keywords matched significantly, analyze common resume terms
-        if (maxScore < 3) {
-            predictedCategory = this.fallbackPrediction(text);
-        }
-        
-        console.log('Category scores:', scores);
-        console.log('Predicted category:', predictedCategory, 'with score:', maxScore);
-        
-        return predictedCategory;
-    }
-
-    fallbackPrediction(text) {
-        // Fallback prediction based on common terms
-        const commonTerms = {
-            'Software Engineer': ['code', 'develop', 'program', 'software', 'technical', 'computer'],
-            'Data Scientist': ['data', 'analysis', 'research', 'statistics', 'model'],
-            'Marketing Specialist': ['marketing', 'campaign', 'brand', 'promotion', 'customer'],
-            'Business Analyst': ['business', 'analysis', 'process', 'requirements', 'stakeholder'],
-            'Project Manager': ['project', 'manage', 'team', 'coordinate', 'planning']
-        };
-        
-        let maxScore = 0;
-        let category = 'Business Analyst'; // most generic default
-        
-        Object.entries(commonTerms).forEach(([cat, terms]) => {
-            let score = 0;
-            terms.forEach(term => {
-                const regex = new RegExp(`\\b${term}\\b`, 'gi');
-                const matches = text.match(regex);
-                if (matches) score += matches.length;
+        try {
+            const response = await fetch(`${API_BASE_URL}/analyze-text`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text })
             });
             
-            if (score > maxScore) {
-                maxScore = score;
-                category = cat;
+            const result = await response.json();
+            
+            if (result.success) {
+                this.currentText = text;
+                this.showResults(text, result.predicted_category, result.confidence);
+            } else {
+                throw new Error(result.error || 'Failed to analyze text');
             }
-        });
-        
-        console.log('Fallback prediction:', category, 'with score:', maxScore);
-        return category;
+            
+        } catch (error) {
+            console.error('Text analysis error:', error);
+            this.hideProcessing();
+            
+            if (error.message.includes('fetch')) {
+                alert('Could not connect to the analysis server. Please make sure the Python API server is running on localhost:5000');
+            } else {
+                alert(`Error analyzing text: ${error.message}`);
+            }
+        }
     }
 
     showProcessing() {
@@ -405,15 +212,23 @@ class ResumeAnalyzer {
         this.processingSection.style.display = 'block';
     }
 
-    showResults(text, category) {
+    hideProcessing() {
+        this.processingSection.style.display = 'none';
+        this.featuresShowcase.style.display = 'block';
+    }
+
+    showResults(text, category, confidence) {
         this.processingSection.style.display = 'none';
         this.featuresShowcase.style.display = 'none';
         
         // Update extracted text
-        this.extractedText.textContent = this.currentText;
+        this.extractedText.textContent = text;
         
-        // Update category
-        this.categoryName.textContent = category;
+        // Update category with confidence
+        this.categoryName.innerHTML = `
+            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">${category}</div>
+            <div style="font-size: 1.1rem; opacity: 0.9;">Confidence: ${confidence}%</div>
+        `;
         
         // Show results
         this.resultsSection.style.display = 'block';
@@ -449,11 +264,16 @@ class ResumeAnalyzer {
     }
 
     downloadResults() {
+        const categoryElement = this.categoryName;
+        const categoryText = categoryElement.textContent || categoryElement.innerText;
+        
         const results = {
             timestamp: new Date().toISOString(),
-            predictedCategory: this.categoryName.textContent,
+            predictedCategory: categoryText.split('Confidence:')[0].trim(),
+            confidence: categoryText.includes('Confidence:') ? categoryText.split('Confidence:')[1].trim() : 'N/A',
             extractedText: this.currentText.substring(0, 1000) + (this.currentText.length > 1000 ? '...' : ''),
-            textLength: this.currentText.length
+            textLength: this.currentText.length,
+            modelUsed: 'SVC with TF-IDF (Python ML Model)'
         };
         
         const dataStr = JSON.stringify(results, null, 2);
