@@ -1,4 +1,4 @@
-# 🎯 IQ Resume
+# IQ Resume
 
 <div align="center">
   <img src="https://img.shields.io/badge/AI-Powered-blue?style=for-the-badge&logo=brain&logoColor=white" alt="AI Powered">
@@ -27,12 +27,14 @@
 <td width="50%">
 
 ### 🤖 **Real AI-Powered Analysis**
+
 - **SVC (Support Vector Classifier)** with TF-IDF vectorization
 - **25 job categories** from trained model
 - **High accuracy predictions** with confidence scores
 - **Real text processing** using your trained models
 
 ### 📁 **Multi-Format Support**
+
 - **PDF** documents (real text extraction)
 - **DOCX** Word files (real text extraction)
 - **TXT** plain text files
@@ -42,12 +44,14 @@
 <td width="50%">
 
 ### ⚡ **Instant Results**
+
 - Real-time processing via API
 - Confidence scores for predictions
 - Beautiful, responsive interface
 - Mobile-optimized design
 
 ### 🎨 **Modern Architecture**
+
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
 - **Backend**: Python Flask API
 - **ML Models**: Your trained SVC, TF-IDF, Label Encoder
@@ -62,6 +66,7 @@
 ## 🚀 Quick Start
 
 ### 🔧 **Prerequisites**
+
 - Python 3.7+
 - Your trained model files: `clf.pkl`, `tfidf.pkl`, `encoder.pkl`
 - Node.js (for frontend development)
@@ -69,6 +74,7 @@
 ### 🐍 **Backend Setup (Python API)**
 
 1. **Ensure model files are present**
+
    ```bash
    # Make sure these files are in your project directory:
    # - clf.pkl (trained SVC model)
@@ -77,11 +83,13 @@
    ```
 
 2. **Start the API server**
+
    ```bash
    python start_api.py
    ```
-   
+
    Or manually:
+
    ```bash
    pip install -r requirements_api.txt
    python api_server.py
@@ -95,11 +103,13 @@
 ### 🌐 **Frontend Setup**
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -164,6 +174,7 @@
 </div>
 
 ### 📚 **Architecture Overview**
+
 ```javascript
 // Frontend (JavaScript)
 ┌─────────────────────┐
@@ -225,26 +236,26 @@ iq-resume/
 
 ### 📡 **Available Endpoints**
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/analyze-text` | Analyze resume text directly |
-| `POST` | `/api/analyze-file` | Analyze uploaded resume file |
-| `GET` | `/api/categories` | Get all available job categories |
-| `GET` | `/api/health` | API health check |
+| Method | Endpoint            | Description                      |
+| ------ | ------------------- | -------------------------------- |
+| `POST` | `/api/analyze-text` | Analyze resume text directly     |
+| `POST` | `/api/analyze-file` | Analyze uploaded resume file     |
+| `GET`  | `/api/categories`   | Get all available job categories |
+| `GET`  | `/api/health`       | API health check                 |
 
 ### 📝 **Example API Usage**
 
 ```javascript
 // Analyze text
-const response = await fetch('http://localhost:5000/api/analyze-text', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: 'Your resume text here...' })
+const response = await fetch("http://localhost:5000/api/analyze-text", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text: "Your resume text here..." }),
 });
 
 const result = await response.json();
 console.log(result.predicted_category); // e.g., "Data Science"
-console.log(result.confidence);         // e.g., 92.5
+console.log(result.confidence); // e.g., 92.5
 ```
 
 ---
@@ -307,12 +318,14 @@ console.log(result.confidence);         // e.g., 92.5
 ### 📦 **Production Deployment**
 
 1. **Deploy Frontend** (Static hosting)
+
    ```bash
    npm run build
    # Deploy dist/ folder to Netlify, Vercel, etc.
    ```
 
 2. **Deploy Backend** (Cloud hosting)
+
    ```bash
    # Deploy to Heroku, AWS, Google Cloud, etc.
    # Make sure to include your model files
@@ -321,7 +334,7 @@ console.log(result.confidence);         // e.g., 92.5
 3. **Update API URL**
    ```javascript
    // In analyzer.js, update:
-   const API_BASE_URL = 'https://your-api-domain.com/api';
+   const API_BASE_URL = "https://your-api-domain.com/api";
    ```
 
 ### 🐳 **Docker Deployment**
@@ -344,11 +357,13 @@ CMD ["python", "api_server.py"]
 ### ❌ **Common Issues**
 
 1. **"Could not connect to analysis server"**
+
    - Make sure Python API is running: `python start_api.py`
    - Check if port 5000 is available
    - Verify model files exist: `clf.pkl`, `tfidf.pkl`, `encoder.pkl`
 
 2. **"Models not loaded properly"**
+
    - Ensure all 3 model files are in the same directory as `api_server.py`
    - Check file permissions
    - Verify Python packages are installed: `pip install -r requirements_api.txt`
@@ -385,6 +400,7 @@ We welcome contributions! Here's how you can help:
 5. **🔄 Open a Pull Request**
 
 ### 🎯 **Areas for Contribution**
+
 - **Model Improvements**: Enhance the ML model accuracy
 - **Additional File Formats**: Support for more resume formats
 - **Real-time Features**: WebSocket integration for live analysis

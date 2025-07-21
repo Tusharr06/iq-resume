@@ -1,185 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IQ Resume - AI Resume Analyzer</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="analyzer.css">
-</head>
-<body>
-    <!-- Navigation -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="analyzer.css" />
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-brain"></i>
-                <span>IQ Resume</span>
-            </div>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="analyzer.html" class="nav-link active">Analyzer</a>
-                <a href="index.html#features" class="nav-link">Features</a>
-                <a href="index.html#how-it-works" class="nav-link">How It Works</a>
-            </div>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-brain"></i>
+          <span>IQ Resume</span>
         </div>
+        <div class="nav-menu">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="analyzer.html" class="nav-link active">Analyzer</a>
+          <a href="index.html#features" class="nav-link">Features</a>
+          <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+        </div>
+      </div>
     </nav>
-
-    <!-- Main Content -->
     <main class="main-content">
-        <div class="container">
-            <!-- Header -->
-            <div class="analyzer-header">
-                <h1 class="main-title">🎯 AI Resume Analyzer</h1>
-                <p class="sub-title">Discover your resume's job category with advanced AI technology</p>
-            </div>
-
-            <!-- Upload Section -->
-            <div class="upload-section">
-                <div class="input-method-selector">
-                    <h3>Choose input method:</h3>
-                    <div class="method-buttons">
-                        <button class="method-btn active" data-method="upload">
-                            <i class="fas fa-upload"></i>
-                            Upload Resume File
-                        </button>
-                        <button class="method-btn" data-method="text">
-                            <i class="fas fa-edit"></i>
-                            Enter Text Directly
-                        </button>
-                    </div>
-                </div>
-
-                <!-- File Upload -->
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-content">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h3>Upload Your Resume</h3>
-                        <p>Supported formats: PDF, DOCX, TXT</p>
-                        <input type="file" id="fileInput" accept=".pdf,.docx,.txt" hidden>
-                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
-                            Choose File
-                        </button>
-                    </div>
-                    <div class="drag-overlay">
-                        <div class="drag-content">
-                            <i class="fas fa-file-upload"></i>
-                            <p>Drop your file here</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Text Input -->
-                <div class="text-input-area" id="textInputArea" style="display: none;">
-                    <h3>Enter Resume Text</h3>
-                    <p>Paste your resume content below</p>
-                    <textarea id="resumeText" placeholder="Paste your resume text here..." rows="15"></textarea>
-                    <button class="analyze-btn" id="analyzeTextBtn">
-                        <i class="fas fa-search"></i>
-                        Analyze Resume
-                    </button>
-                </div>
-            </div>
-
-            <!-- Processing Indicator -->
-            <div class="processing-section" id="processingSection" style="display: none;">
-                <div class="processing-content">
-                    <div class="spinner"></div>
-                    <h3>🔍 Analyzing your resume...</h3>
-                    <p>Our AI is processing your content</p>
-                </div>
-            </div>
-
-            <!-- Results Section -->
-            <div class="results-section" id="resultsSection" style="display: none;">
-                <div class="results-grid">
-                    <!-- Preview Column -->
-                    <div class="preview-column">
-                        <div class="preview-card">
-                            <div class="preview-header">
-                                <h3>📄 Extracted Content</h3>
-                                <button class="toggle-preview" id="togglePreview">
-                                    <i class="fas fa-eye"></i>
-                                    Show Preview
-                                </button>
-                            </div>
-                            <div class="preview-content" id="previewContent" style="display: none;">
-                                <div class="extracted-text" id="extractedText"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Analysis Column -->
-                    <div class="analysis-column">
-                        <div class="analysis-card">
-                            <div class="analysis-header">
-                                <h3>🎯 Analysis Result</h3>
-                            </div>
-                            <div class="category-result">
-                                <h2>🏆 Predicted Category</h2>
-                                <div class="category-name" id="categoryName">Software Engineer</div>
-                                <p class="category-description">
-                                    Your resume best matches this job category based on our AI analysis
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="action-buttons">
-                    <button class="btn-secondary" id="analyzeAnotherBtn">
-                        <i class="fas fa-redo"></i>
-                        Analyze Another Resume
-                    </button>
-                    <button class="btn-primary" id="downloadResultBtn">
-                        <i class="fas fa-download"></i>
-                        Download Analysis
-                    </button>
-                </div>
-            </div>
-
-            <!-- Features Section -->
-            <div class="features-showcase" id="featuresShowcase">
-                <h3>✨ Features</h3>
-                <div class="features-grid">
-                    <div class="feature-box">
-                        <div class="feature-icon">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <h4>🤖 AI-Powered</h4>
-                        <p>Advanced machine learning algorithms analyze your resume content</p>
-                    </div>
-                    <div class="feature-box">
-                        <div class="feature-icon">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <h4>✍️ Flexible Input</h4>
-                        <p>Upload files or paste text directly for instant analysis</p>
-                    </div>
-                    <div class="feature-box">
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h4>⚡ Instant Results</h4>
-                        <p>Get your resume category prediction in seconds</p>
-                    </div>
-                </div>
-
-                <div class="how-to-use">
-                    <h3>🚀 How to Use</h3>
-                    <ol>
-                        <li><strong>Choose</strong> your preferred input method (file upload or direct text entry)</li>
-                        <li><strong>Upload</strong> your resume file OR <strong>paste</strong> your resume text directly</li>
-                        <li><strong>Wait</strong> for the AI to process and analyze your content</li>
-                        <li><strong>View</strong> your predicted job category and insights</li>
-                        <li><strong>Optional:</strong> Preview the extracted/entered text</li>
-                    </ol>
-                </div>
-            </div>
+      <div class="container">
+        <div class="analyzer-header">
+          <h1 class="main-title">AI Resume Analyzer</h1>
+          <p class="sub-title">
+            Discover your resume's job category with advanced AI technology
+          </p>
         </div>
+        <div class="upload-section">
+          <div class="input-method-selector">
+            <h3>Choose input method:</h3>
+            <div class="method-buttons">
+              <button class="method-btn active" data-method="upload">
+                <i class="fas fa-upload"></i>
+                Upload Resume File
+              </button>
+              <button class="method-btn" data-method="text">
+                <i class="fas fa-edit"></i>
+                Enter Text Directly
+              </button>
+            </div>
+          </div>
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-content">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <h3>Upload Your Resume</h3>
+              <p>Supported formats: PDF, DOCX, TXT</p>
+              <input
+                type="file"
+                id="fileInput"
+                accept=".pdf,.docx,.txt"
+                hidden
+              />
+              <button
+                class="upload-btn"
+                onclick="document.getElementById('fileInput').click()"
+              >
+                Choose File
+              </button>
+            </div>
+            <div class="drag-overlay">
+              <div class="drag-content">
+                <i class="fas fa-file-upload"></i>
+                <p>Drop your file here</p>
+              </div>
+            </div>
+          </div>
+          <div class="text-input-area" id="textInputArea" style="display: none">
+            <h3>Enter Resume Text</h3>
+            <p>Paste your resume content below</p>
+            <textarea
+              id="resumeText"
+              placeholder="Paste your resume text here..."
+              rows="15"
+            ></textarea>
+            <button class="analyze-btn" id="analyzeTextBtn">
+              <i class="fas fa-search"></i>
+              Analyze Resume
+            </button>
+          </div>
+        </div>
+        <div
+          class="processing-section"
+          id="processingSection"
+          style="display: none"
+        >
+          <div class="processing-content">
+            <div class="spinner"></div>
+            <h3>Analyzing your resume...</h3>
+            <p>Our AI is processing your content</p>
+          </div>
+        </div>
+        <div class="results-section" id="resultsSection" style="display: none">
+          <div class="results-grid">
+            <div class="preview-column">
+              <div class="preview-card">
+                <div class="preview-header">
+                  <h3>Extracted Content</h3>
+                  <button class="toggle-preview" id="togglePreview">
+                    <i class="fas fa-eye"></i>
+                    Show Preview
+                  </button>
+                </div>
+                <div
+                  class="preview-content"
+                  id="previewContent"
+                  style="display: none"
+                >
+                  <div class="extracted-text" id="extractedText"></div>
+                </div>
+              </div>
+            </div>
+            <div class="analysis-column">
+              <div class="analysis-card">
+                <div class="analysis-header">
+                  <h3>Analysis Result</h3>
+                </div>
+                <div class="category-result">
+                  <h2>Predicted Category</h2>
+                  <div class="category-name" id="categoryName"></div>
+                  <p class="category-description">
+                    Your resume best matches this job category based on our AI
+                    analysis
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn-secondary" id="analyzeAnotherBtn">
+              <i class="fas fa-redo"></i>
+              Analyze Another Resume
+            </button>
+            <button class="btn-primary" id="downloadResultBtn">
+              <i class="fas fa-download"></i>
+              Download Analysis
+            </button>
+          </div>
+        </div>
+        <div class="features-showcase" id="featuresShowcase">
+          <h3>Features</h3>
+          <div class="features-grid">
+            <div class="feature-box">
+              <div class="feature-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h4>AI-Powered</h4>
+              <p>
+                Advanced machine learning algorithms analyze your resume content
+              </p>
+            </div>
+            <div class="feature-box">
+              <div class="feature-icon">
+                <i class="fas fa-edit"></i>
+              </div>
+              <h4>Flexible Input</h4>
+              <p>Upload files or paste text directly for instant analysis</p>
+            </div>
+            <div class="feature-box">
+              <div class="feature-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <h4>Instant Results</h4>
+              <p>Get your resume category prediction in seconds</p>
+            </div>
+          </div>
+          <div class="how-to-use">
+            <h3>How to Use</h3>
+            <ol>
+              <li>
+                <strong>Choose</strong> your preferred input method (file upload
+                or direct text entry)
+              </li>
+              <li>
+                <strong>Upload</strong> your resume file OR
+                <strong>paste</strong> your resume text directly
+              </li>
+              <li>
+                <strong>Wait</strong> for the AI to process and analyze your
+                content
+              </li>
+              <li>
+                <strong>View</strong> your predicted job category and insights
+              </li>
+              <li>
+                <strong>Optional:</strong> Preview the extracted/entered text
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
     </main>
-
     <script type="module" src="analyzer.js"></script>
-</body>
+  </body>
 </html>

@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
-"""
-Script to start the Resume Analyzer API server
-"""
-
 import os
 import sys
 import subprocess
 
 def check_requirements():
-    """Check if required model files exist"""
     required_files = ['clf.pkl', 'tfidf.pkl', 'encoder.pkl']
     missing_files = []
     
@@ -27,7 +22,6 @@ def check_requirements():
     return True
 
 def install_requirements():
-    """Install required packages"""
     print("📦 Installing required packages...")
     try:
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-r', 'requirements_api.txt'])
@@ -39,7 +33,6 @@ def install_requirements():
         return False
 
 def start_server():
-    """Start the Flask API server"""
     print("🚀 Starting Resume Analyzer API server...")
     print("📡 Server will be available at: http://localhost:5000")
     print("🔗 API endpoints:")

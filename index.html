@@ -1,314 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IQ Resume - AI-Powered Resume Analyzer</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-brain"></i>
-                <span>IQ Resume</span>
-            </div>
-            <div class="nav-menu">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="#demo" class="nav-link">Demo</a>
-                <a href="analyzer.html" class="nav-cta">Try Now</a>
-            </div>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-brain"></i>
+          <span>IQ Resume</span>
         </div>
+        <div class="nav-menu">
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#how-it-works" class="nav-link">How It Works</a>
+          <a href="#demo" class="nav-link">Demo</a>
+          <a href="analyzer.html" class="nav-cta">Try Now</a>
+        </div>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <i class="fas fa-sparkles"></i>
-                    <span>AI-Powered Technology</span>
-                </div>
-                <h1 class="hero-title">
-                    Discover Your Resume's
-                    <span class="gradient-text">Job Category</span>
-                    with AI
-                </h1>
-                <p class="hero-description">
-                    Advanced machine learning algorithms analyze your resume content and predict the most suitable job category. Upload your resume and get instant insights powered by cutting-edge AI technology.
-                </p>
-                <div class="hero-buttons">
-                    <a href="analyzer.html" class="btn-primary">
-                        <i class="fas fa-rocket"></i>
-                        Try IQ Resume Now
-                    </a>
-                    <a href="#demo" class="btn-secondary">
-                        <i class="fas fa-play"></i>
-                        Watch Demo
-                    </a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="stat-number">10K+</div>
-                        <div class="stat-label">Resumes Analyzed</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number">95%</div>
-                        <div class="stat-label">Accuracy Rate</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number">3s</div>
-                        <div class="stat-label">Average Processing</div>
-                    </div>
-                </div>
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fas fa-sparkles"></i>
+            <span>AI-Powered Technology</span>
+          </div>
+          <h1 class="hero-title">
+            Discover Your Resume's
+            <span class="gradient-text">Job Category</span>
+            with AI
+          </h1>
+          <p class="hero-description">
+            Advanced machine learning algorithms analyze your resume content and
+            predict the most suitable job category. Upload your resume and get
+            instant insights powered by cutting-edge AI technology.
+          </p>
+          <div class="hero-buttons">
+            <a href="analyzer.html" class="btn-primary">
+              <i class="fas fa-rocket"></i>
+              Try IQ Resume Now
+            </a>
+            <a href="#demo" class="btn-secondary">
+              <i class="fas fa-play"></i>
+              Watch Demo
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-number">10K+</div>
+              <div class="stat-label">Resumes Analyzed</div>
             </div>
-            <div class="hero-visual">
-                <div class="floating-card card-1">
-                    <i class="fas fa-file-pdf"></i>
-                    <span>PDF Support</span>
-                </div>
-                <div class="floating-card card-2">
-                    <i class="fas fa-file-word"></i>
-                    <span>DOCX Support</span>
-                </div>
-                <div class="floating-card card-3">
-                    <i class="fas fa-brain"></i>
-                    <span>AI Analysis</span>
-                </div>
-                <div class="hero-mockup">
-                    <div class="mockup-screen">
-                        <div class="mockup-header">
-                            <div class="mockup-dots">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
-                        <div class="mockup-content">
-                            <div class="upload-area">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Upload Resume</p>
-                            </div>
-                            <div class="analysis-result">
-                                <div class="result-category">Software Engineer</div>
-                                <div class="confidence">95% Confidence</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="stat">
+              <div class="stat-number">95%</div>
+              <div class="stat-label">Accuracy Rate</div>
             </div>
+            <div class="stat">
+              <div class="stat-number">3s</div>
+              <div class="stat-label">Average Processing</div>
+            </div>
+          </div>
         </div>
+        <div class="hero-visual">
+          <div class="floating-card card-1">
+            <i class="fas fa-file-pdf"></i>
+            <span>PDF Support</span>
+          </div>
+          <div class="floating-card card-2">
+            <i class="fas fa-file-word"></i>
+            <span>DOCX Support</span>
+          </div>
+          <div class="floating-card card-3">
+            <i class="fas fa-brain"></i>
+            <span>AI Analysis</span>
+          </div>
+          <div class="hero-mockup">
+            <div class="mockup-screen">
+              <div class="mockup-header">
+                <div class="mockup-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <div class="mockup-content">
+                <div class="upload-area">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>Upload Resume</p>
+                </div>
+                <div class="analysis-result">
+                  <div class="result-category">Software Engineer</div>
+                  <div class="confidence">95% Confidence</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Features Section -->
     <section id="features" class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>Powerful Features</h2>
-                <p>Everything you need for intelligent resume analysis</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>AI-Powered Analysis</h3>
-                    <p>Advanced machine learning algorithms using Support Vector Classifier and TF-IDF vectorization for accurate job category prediction.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h3>Multi-Format Support</h3>
-                    <p>Upload PDF, DOCX, or TXT files, or paste text directly. Our system handles all popular resume formats seamlessly.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Instant Results</h3>
-                    <p>Get your resume category prediction in seconds with real-time processing and immediate feedback on your content.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Secure & Private</h3>
-                    <p>Your resume data is processed securely and never stored. Complete privacy protection for your sensitive information.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Mobile Responsive</h3>
-                    <p>Access IQ Resume from any device. Our responsive design ensures perfect functionality on desktop, tablet, and mobile.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>High Accuracy</h3>
-                    <p>Trained on thousands of resumes with industry-leading accuracy rates for reliable job category predictions.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2>Powerful Features</h2>
+          <p>Everything you need for intelligent resume analysis</p>
         </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3>AI-Powered Analysis</h3>
+            <p>
+              Advanced machine learning algorithms using Support Vector
+              Classifier and TF-IDF vectorization for accurate job category
+              prediction.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <h3>Multi-Format Support</h3>
+            <p>
+              Upload PDF, DOCX, or TXT files, or paste text directly. Our system
+              handles all popular resume formats seamlessly.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3>Instant Results</h3>
+            <p>
+              Get your resume category prediction in seconds with real-time
+              processing and immediate feedback on your content.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Secure & Private</h3>
+            <p>
+              Your resume data is processed securely and never stored. Complete
+              privacy protection for your sensitive information.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Mobile Responsive</h3>
+            <p>
+              Access IQ Resume from any device. Our responsive design ensures
+              perfect functionality on desktop, tablet, and mobile.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>High Accuracy</h3>
+            <p>
+              Trained on thousands of resumes with industry-leading accuracy
+              rates for reliable job category predictions.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- How It Works Section -->
     <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <div class="section-header">
-                <h2>How It Works</h2>
-                <p>Simple steps to analyze your resume</p>
-            </div>
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Upload Resume</h3>
-                        <p>Choose to upload a file (PDF, DOCX, TXT) or paste your resume text directly into the application.</p>
-                    </div>
-                    <div class="step-icon">
-                        <i class="fas fa-upload"></i>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>AI Processing</h3>
-                        <p>Our advanced machine learning model analyzes your resume content using natural language processing techniques.</p>
-                    </div>
-                    <div class="step-icon">
-                        <i class="fas fa-cogs"></i>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Get Results</h3>
-                        <p>Receive instant job category prediction with confidence scores and detailed analysis of your resume content.</p>
-                    </div>
-                    <div class="step-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2>How It Works</h2>
+          <p>Simple steps to analyze your resume</p>
         </div>
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Upload Resume</h3>
+              <p>
+                Choose to upload a file (PDF, DOCX, TXT) or paste your resume
+                text directly into the application.
+              </p>
+            </div>
+            <div class="step-icon">
+              <i class="fas fa-upload"></i>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>AI Processing</h3>
+              <p>
+                Our advanced machine learning model analyzes your resume content
+                using natural language processing techniques.
+              </p>
+            </div>
+            <div class="step-icon">
+              <i class="fas fa-cogs"></i>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Get Results</h3>
+              <p>
+                Receive instant job category prediction with confidence scores
+                and detailed analysis of your resume content.
+              </p>
+            </div>
+            <div class="step-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Demo Section -->
     <section id="demo" class="demo">
-        <div class="container">
-            <div class="demo-content">
-                <div class="demo-text">
-                    <h2>See IQ Resume in Action</h2>
-                    <p>Watch how our AI-powered resume analyzer works in real-time. Upload your resume and get instant job category predictions with high accuracy.</p>
-                    <div class="demo-features">
-                        <div class="demo-feature">
-                            <i class="fas fa-check"></i>
-                            <span>Real-time text extraction</span>
-                        </div>
-                        <div class="demo-feature">
-                            <i class="fas fa-check"></i>
-                            <span>Advanced AI analysis</span>
-                        </div>
-                        <div class="demo-feature">
-                            <i class="fas fa-check"></i>
-                            <span>Instant category prediction</span>
-                        </div>
-                    </div>
-                    <a href="analyzer.html" class="btn-primary">
-                        <i class="fas fa-external-link-alt"></i>
-                        Launch Application
-                    </a>
-                </div>
-                <div class="demo-visual">
-                    <div class="demo-mockup">
-                        <div class="demo-screen">
-                            <div class="demo-header">
-                                <div class="demo-title">🎯 AI Resume Analyzer</div>
-                            </div>
-                            <div class="demo-body">
-                                <div class="upload-section">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <p>Upload Resume File</p>
-                                </div>
-                                <div class="analysis-section">
-                                    <div class="category-result">
-                                        <h3>Predicted Category</h3>
-                                        <div class="category-name">Data Scientist</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="demo-content">
+          <div class="demo-text">
+            <h2>See IQ Resume in Action</h2>
+            <p>
+              Watch how our AI-powered resume analyzer works in real-time.
+              Upload your resume and get instant job category predictions with
+              high accuracy.
+            </p>
+            <div class="demo-features">
+              <div class="demo-feature">
+                <i class="fas fa-check"></i>
+                <span>Real-time text extraction</span>
+              </div>
+              <div class="demo-feature">
+                <i class="fas fa-check"></i>
+                <span>Advanced AI analysis</span>
+              </div>
+              <div class="demo-feature">
+                <i class="fas fa-check"></i>
+                <span>Instant category prediction</span>
+              </div>
             </div>
+            <a href="analyzer.html" class="btn-primary">
+              <i class="fas fa-external-link-alt"></i>
+              Launch Application
+            </a>
+          </div>
+          <div class="demo-visual">
+            <div class="demo-mockup">
+              <div class="demo-screen">
+                <div class="demo-header">
+                  <div class="demo-title">🎯 AI Resume Analyzer</div>
+                </div>
+                <div class="demo-body">
+                  <div class="upload-section">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Upload Resume File</p>
+                  </div>
+                  <div class="analysis-section">
+                    <div class="category-result">
+                      <h3>Predicted Category</h3>
+                      <div class="category-name">Data Scientist</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- CTA Section -->
     <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Analyze Your Resume?</h2>
-                <p>Join thousands of professionals who have discovered their ideal job categories with IQ Resume</p>
-                <a href="analyzer.html" class="btn-primary large">
-                    <i class="fas fa-rocket"></i>
-                    Get Started Now - It's Free
-                </a>
-            </div>
+      <div class="container">
+        <div class="cta-content">
+          <h2>Ready to Analyze Your Resume?</h2>
+          <p>
+            Join thousands of professionals who have discovered their ideal job
+            categories with IQ Resume
+          </p>
+          <a href="analyzer.html" class="btn-primary large">
+            <i class="fas fa-rocket"></i>
+            Get Started Now - It's Free
+          </a>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <i class="fas fa-brain"></i>
-                        <span>IQ Resume</span>
-                    </div>
-                    <p>AI-powered resume analysis for smarter career decisions</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-section">
-                        <h4>Product</h4>
-                        <a href="#features">Features</a>
-                        <a href="#how-it-works">How It Works</a>
-                        <a href="analyzer.html">Try Now</a>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Technology</h4>
-                        <a href="#">Machine Learning</a>
-                        <a href="#">Natural Language Processing</a>
-                        <a href="#">AI Analysis</a>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Support</h4>
-                        <a href="#">Documentation</a>
-                        <a href="#">Help Center</a>
-                        <a href="#">Contact</a>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <i class="fas fa-brain"></i>
+              <span>IQ Resume</span>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 IQ Resume. Built with ❤️ using Modern Web Technologies</p>
+            <p>AI-powered resume analysis for smarter career decisions</p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-section">
+              <h4>Product</h4>
+              <a href="#features">Features</a>
+              <a href="#how-it-works">How It Works</a>
+              <a href="analyzer.html">Try Now</a>
             </div>
+            <div class="footer-section">
+              <h4>Technology</h4>
+              <a href="#">Machine Learning</a>
+              <a href="#">Natural Language Processing</a>
+              <a href="#">AI Analysis</a>
+            </div>
+            <div class="footer-section">
+              <h4>Support</h4>
+              <a href="#">Documentation</a>
+              <a href="#">Help Center</a>
+              <a href="#">Contact</a>
+            </div>
+          </div>
         </div>
+        <div class="footer-bottom">
+          <p>
+            &copy; 2024 IQ Resume. Built with ❤️ using Modern Web Technologies
+          </p>
+        </div>
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

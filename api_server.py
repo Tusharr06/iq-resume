@@ -7,19 +7,11 @@ import re
 import io
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 
-# Load the trained models
-try:
-    svc_model = pickle.load(open('clf.pkl', 'rb'))
-    tfidf = pickle.load(open('tfidf.pkl', 'rb'))
-    le = pickle.load(open('encoder.pkl', 'rb'))
-    print("Models loaded successfully!")
-except Exception as e:
-    print(f"Error loading models: {e}")
-    svc_model = None
-    tfidf = None
-    le = None
+svc_model = pickle.load(open('clf.pkl', 'rb'))
+tfidf = pickle.load(open('tfidf.pkl', 'rb'))
+le = pickle.load(open('encoder.pkl', 'rb'))
 
 def cleanResume(txt):
     cleanText = re.sub('http\S+\s', ' ', txt)
@@ -55,22 +47,15 @@ def predict_category(text):
     if not all([svc_model, tfidf, le]):
         raise Exception("Models not loaded properly")
     
-    # Clean the text
     cleaned_text = cleanResume(text)
     
-    # Vectorize the text
-    vectorized_text = tfidf.transform([cleaned_text])
+    vectorized_text = tfidf.transform([cleaned_text]).toarray()
     
-    # Make prediction
     predicted_category_encoded = svc_model.predict(vectorized_text)
     predicted_category = le.inverse_transform(predicted_category_encoded)
     
-    # Get prediction probability/confidence
-    try:
-        probabilities = svc_model.predict_proba(vectorized_text)[0]
-        confidence = max(probabilities) * 100
-    except:
-        confidence = 85.0  # Default confidence if predict_proba not available
+    probabilities = svc_model.predict_proba(vectorized_text)[0]
+    confidence = (max(probabilities) - min(probabilities)) / (1 - min(probabilities)) * 100
     
     return predicted_category[0], confidence
 
@@ -108,7 +93,6 @@ def analyze_file():
         file_content = file.read()
         filename = file.filename.lower()
         
-        # Extract text based on file type
         if filename.endswith('.pdf'):
             text = extract_text_from_pdf(file_content)
         elif filename.endswith('.docx'):
@@ -136,24 +120,18 @@ def analyze_file():
 
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
-    """Get all available job categories"""
-    try:
-        if le is None:
-            return jsonify({'error': 'Label encoder not loaded'}), 500
-        
-        categories = le.classes_.tolist()
-        return jsonify({
-            'success': True,
-            'categories': categories,
-            'total_categories': len(categories)
-        })
+    if le is None:
+        return jsonify({'error': 'Label encoder not loaded'}), 500
     
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    categories = le.classes_.tolist()
+    return jsonify({
+        'success': True,
+        'categories': categories,
+        'total_categories': len(categories)
+    })
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """Health check endpoint"""
     model_status = all([svc_model, tfidf, le])
     return jsonify({
         'status': 'healthy' if model_status else 'unhealthy',
